@@ -1,17 +1,26 @@
 import scrapy
-import logging
 
+class QuotesSpider(scrapy.Spider):
 
-logging.getLogger('scrapy').setLevel(logging.WARNING)
+    name = "quotes"
 
-class spider1(scrapy.Spider):
+    def start_requests(self):
 
-    name = 'Wikipedia'
+        urls = ['http://quotes.toscrape.com/page/1/','http://quotes.toscrape.com/page/2/']
 
-    start_urls = ['https://en.wikipedia.org/wiki/Battery_(electricity)']
+        for url in urls:
+
+            yield scrapy.Request(url=url, callback=self.parse)
+
 
     def parse(self, response):
 
-        print(response.css('h1#firstHeading::text').extract())
+        page = response.url.split("/")[-2]
 
-        print(''.join(response.css('div#mw-content-text>div>p')[0].css('::text').extract()))
+        filename = 'quotes-%s.html' % page
+
+        with open(filename, 'wb') as f:
+
+            f.write(response.body)
+
+        self.log('Saved file %s' % filename)
