@@ -6,7 +6,7 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        urls = ['http://quotes.toscrape.com/page/1/','http://quotes.toscrape.com/page/2/']
+        urls = ['http://codydevelopers.co.ke']
 
         for url in urls:
 
